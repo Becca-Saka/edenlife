@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   ably_flutter: ^1.2.29
+  cloud_firestore: ^4.17.0
   firebase_auth: ^4.19.2
   firebase_core: ^2.30.0
   flutter:
