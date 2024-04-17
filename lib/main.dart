@@ -1,14 +1,16 @@
 import 'package:eden/app/app_router.dart';
 import 'package:eden/data/providers/auth_provider.dart';
+import 'package:eden/data/providers/order_provider.dart';
+import 'package:eden/data/services/ably_service.dart';
 import 'package:eden/data/services/auth_services.dart';
 import 'package:eden/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MainApp());
 }
 
@@ -21,6 +23,9 @@ class MainApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => AuthProvider(authService: AuthService()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => OrderProvider(ablyService: AblyService()),
         ),
       ],
       child: MaterialApp.router(

@@ -1,6 +1,6 @@
-import 'package:eden/app/app_router.dart';
+import 'package:eden/data/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class StartupView extends StatefulWidget {
   const StartupView({super.key});
@@ -13,7 +13,7 @@ class _StartupViewState extends State<StartupView> {
   @override
   void didChangeDependencies() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.go(AppRoutes.signIn);
+      Provider.of<AuthProvider>(context, listen: false).checkAuthStatus();
     });
     super.didChangeDependencies();
   }
