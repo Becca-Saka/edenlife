@@ -66,11 +66,11 @@ class AuthService {
 
         await FirebaseAuth.instance.signInWithCredential(credential);
       } else {
-        throw AuthException('Google sign in cancelled');
+        return false;
       }
       return true;
     } on FirebaseAuthException catch (e, s) {
-      debugPrint('$e\n$s');
+      debugPrint('${e.message}\n$s');
       final message = AuthExceptionHandler.handleFirebaseAuthException(e);
       throw AuthException(message);
     } on Exception catch (e, s) {
@@ -81,20 +81,26 @@ class AuthService {
 
   Future<bool> signInWithGithub() async {
     try {
-      final result = await AppRouter.router.push(
-        AppRoutes.dashboard,
+      final githubResult = await AppRouter.router.push(
+        AppRoutes.githubAuth,
         extra: _gitHubSignIn,
       );
-      if (result == null) {
-        // user cancelled the sign in or error occurred
+      if (githubResult == null) {
+        return false;
       }
 
-      var data = result as GithubSignInResponse;
+      var data = githubResult as GithubSignInResponse;
 
       if (data.status != ResultStatus.success) {
-        print(result.message);
+        throw AuthException('Error signing in with Github}');
       }
 
+      final credential = GithubAuthProvider.credential(data.accessToken!);
+      final result =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      debugPrint(result.user?.email);
+      debugPrint(result.user?.displayName);
+      debugPrint(result.user?.photoURL);
       return true;
     } on FirebaseAuthException catch (e, s) {
       debugPrint('$e\n$s');

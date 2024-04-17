@@ -13,7 +13,8 @@ dependencies:
   firebase_core: ^2.30.0
   flutter:
     sdk: flutter
-  github_signin_aksoyhlc: ^0.0.4
+  github_signin_aksoyhlc: 
+    git: https://github.com/Becca-Saka/github_signin_aksoyhlc.git
   go_router: ^13.2.4
   google_sign_in: ^6.2.1
   mocktail: ^1.0.3

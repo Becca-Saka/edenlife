@@ -219,10 +219,11 @@ packages:
   github_signin_aksoyhlc:
     dependency: "direct main"
     description:
-      name: github_signin_aksoyhlc
-      sha256: "561be55d68c4001c9f2c122ad72cac48b03595870c3450a56b09c371b0915884"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "0dc529880291886b5e21c39870a0229ca6511ebb"
+      url: "https://github.com/Becca-Saka/github_signin_aksoyhlc.git"
+    source: git
     version: "0.0.4"
   go_router:
     dependency: "direct main"
