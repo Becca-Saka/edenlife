@@ -13,8 +13,11 @@ dependencies:
   firebase_core: ^2.30.0
   flutter:
     sdk: flutter
-  github_sign_in: ^0.0.4
+  github_signin_aksoyhlc: ^0.0.4
+  go_router: ^13.2.4
   google_sign_in: ^6.2.1
+  mocktail: ^1.0.3
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_lints: ^3.0.0

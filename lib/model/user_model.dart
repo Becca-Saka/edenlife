@@ -6,14 +6,11 @@ class UserModel {
   String email;
   final String firstName;
   final String lastName;
-  final String dateOfBirth;
-  UserModel({
-    required this.uid,
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.dateOfBirth,
-  });
+  UserModel(
+      {required this.uid,
+      required this.email,
+      required this.firstName,
+      required this.lastName});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -21,7 +18,6 @@ class UserModel {
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
-      'dateOfBirth': dateOfBirth,
     };
   }
 
@@ -31,7 +27,6 @@ class UserModel {
       email: map['email'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
-      dateOfBirth: map['dateOfBirth'] as String,
     );
   }
 

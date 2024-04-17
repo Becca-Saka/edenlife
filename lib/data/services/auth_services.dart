@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eden/exceptions/auth_exception.dart';
+import 'package:eden/app/app_router.dart';
+import 'package:eden/model/auth_exception.dart';
 import 'package:eden/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:github_sign_in/github_sign_in.dart';
+import 'package:github_signin_aksoyhlc/github_signin_aksoyhlc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -11,10 +12,11 @@ class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? get currentUser => _auth.currentUser;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final GitHubSignIn _gitHubSignIn = GitHubSignIn(
+  final GithubParamsModel _gitHubSignIn = GithubParamsModel(
     clientId: const String.fromEnvironment('GITHUB_CLIENT_ID'),
     clientSecret: const String.fromEnvironment('GITHUB_CLIENT_SECRET'),
-    redirectUrl: const String.fromEnvironment('GITHUB_AUTH_URL'),
+    callbackUrl: const String.fromEnvironment('GITHUB_AUTH_URL'),
+    scopes: 'read:user, user:email',
   );
   Future<bool> saveUserDetails(UserModel userModel) async {
     try {
@@ -53,34 +55,54 @@ class AuthService {
   Future<bool> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      } else {
+        throw AuthException('Google sign in cancelled');
+      }
       return true;
-    } catch (e) {
-      debugPrint('Error signing in with Google: $e');
-      return false;
+    } on FirebaseAuthException catch (e, s) {
+      debugPrint('$e\n$s');
+      final message = AuthExceptionHandler.handleFirebaseAuthException(e);
+      throw AuthException(message);
+    } on Exception catch (e, s) {
+      debugPrint('Error signing in with Google: $e\n$s');
+      throw AuthException(e.toString());
     }
   }
 
-  Future<bool> signInWithGithub(context) async {
+  Future<bool> signInWithGithub() async {
     try {
-      final result = await _gitHubSignIn.signIn(context);
-      if (result.token != null) {
-        final githubAuthCredential =
-            GithubAuthProvider.credential(result.token!);
-        await FirebaseAuth.instance.signInWithCredential(githubAuthCredential);
+      final result = await AppRouter.router.push(
+        AppRoutes.dashboard,
+        extra: _gitHubSignIn,
+      );
+      if (result == null) {
+        // user cancelled the sign in or error occurred
+      }
+
+      var data = result as GithubSignInResponse;
+
+      if (data.status != ResultStatus.success) {
+        print(result.message);
       }
 
       return true;
-    } catch (e) {
-      debugPrint('Error signing in with Google: $e');
-      return false;
+    } on FirebaseAuthException catch (e, s) {
+      debugPrint('$e\n$s');
+      final message = AuthExceptionHandler.handleFirebaseAuthException(e);
+      throw AuthException(message);
+    } on Exception catch (e, s) {
+      debugPrint('Error signing in with Google: $e\n$s');
+      throw AuthException(e.toString());
     }
   }
 
