@@ -1,11 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:eden/data/providers/order_provider.dart';
-import 'package:eden/shared/app_colors.dart';
-import 'package:eden/shared/app_spacing.dart';
-import 'package:eden/shared/app_text_style.dart';
-import 'package:eden/shared/extension/datetime.dart';
-import 'package:eden/shared/extension/string.dart';
-import 'package:eden/shared/widget/order_card_widget.dart';
+import 'package:eden/shared/shared.dart';
+import 'package:eden/ui/tracking/widget/order_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timelines/timelines.dart';
@@ -41,7 +37,7 @@ class TrackingDetailsView extends StatelessWidget {
                         'Tracking',
                         style: AppTextStyle.bold16.copyWith(
                           fontSize: 28,
-                          color: AppColors.primaryColor,
+                          color: AppColors.secondaryColor,
                           fontWeight: AppFontWeight.black,
                         ),
                       ),
@@ -62,18 +58,21 @@ class TrackingDetailsView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: FixedTimeline.tileBuilder(
+                            mainAxisSize: MainAxisSize.min,
                             theme: TimelineThemeData(
-                                color: AppColors.secondaryColor,
+                                color: AppColors.primaryColor,
                                 indicatorTheme:
                                     const IndicatorThemeData(size: 15),
-                                connectorTheme:
-                                    const ConnectorThemeData(thickness: 4)),
+                                connectorTheme: const ConnectorThemeData(
+                                  thickness: 4,
+                                  space: 10,
+                                )),
                             builder: TimelineTileBuilder.connected(
-                              connectionDirection: ConnectionDirection.after,
+                              connectionDirection: ConnectionDirection.before,
                               indicatorBuilder: (_, index) {
                                 if (index <= order.statusHistory.length - 1) {
                                   return const DotIndicator(
-                                    color: AppColors.secondaryColor,
+                                    color: AppColors.primaryColor,
                                     child: Icon(
                                       Icons.check,
                                       color: Colors.white,
@@ -90,7 +89,7 @@ class TrackingDetailsView extends StatelessWidget {
                               connectorBuilder: (_, index, ___) =>
                                   index <= order.statusHistory.length - 1
                                       ? const SolidLineConnector(
-                                          color: AppColors.secondaryColor)
+                                          color: AppColors.primaryColor)
                                       : const DashedLineConnector(
                                           color: AppColors.grey400),
                               contentsAlign: ContentsAlign.basic,
@@ -103,11 +102,17 @@ class TrackingDetailsView extends StatelessWidget {
                               },
                               contentsBuilder: (context, index) {
                                 final status = provider.statusList[index];
+                                final statusHistory = order.statusHistory
+                                    .firstWhereOrNull(
+                                        (element) => element.status == status);
                                 return Padding(
                                   padding: const EdgeInsets.all(24.0),
                                   child: Text(
                                     status.toTitleCase(),
-                                    style: AppTextStyle.bold14,
+                                    style: statusHistory != null
+                                        ? AppTextStyle.bold14
+                                        : AppTextStyle.medium14
+                                            .copyWith(color: AppColors.grey400),
                                   ),
                                 );
                               },
@@ -116,17 +121,14 @@ class TrackingDetailsView extends StatelessWidget {
                                 final statusHistory = order.statusHistory
                                     .firstWhereOrNull(
                                         (element) => element.status == status);
+                                if (statusHistory == null) {
+                                  return const SizedBox.shrink();
+                                }
                                 return Padding(
                                   padding: const EdgeInsets.all(24.0),
                                   child: Text(
-                                    statusHistory != null
-                                        ? statusHistory.date.timeOnly
-                                        : 'Awaiting status',
-                                    style: AppTextStyle.bold12.copyWith(
-                                      color: statusHistory != null
-                                          ? Colors.black
-                                          : AppColors.grey400,
-                                    ),
+                                    statusHistory.date.timeOnly,
+                                    style: AppTextStyle.bold12,
                                   ),
                                 );
                               },

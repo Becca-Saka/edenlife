@@ -1,4 +1,5 @@
 import 'package:eden/shared/app_colors.dart';
+import 'package:eden/shared/widget/app_icons.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedProgressBar extends StatelessWidget {
@@ -17,55 +18,54 @@ class AnimatedProgressBar extends StatelessWidget {
           end: progress,
         ),
         builder: (context, value, _) {
+          bool isComplete = value == 1;
           final position = width * value;
           return Stack(
             clipBehavior: Clip.none,
             children: [
               Stack(
-                // alignment: Alignment.centerLeft,
                 clipBehavior: Clip.none,
-                // alignment: Alignment.bottomCenter,
                 children: [
-                  // const AppSpacing(h: 4),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: LinearProgressIndicator(
                       value: value,
-                      color: AppColors.secondaryColor,
+                      color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(0),
                     ),
                   ),
                   Positioned(
-                    bottom: -8,
+                    bottom: -6,
                     left: 0,
                     child: CircleAvatar(
-                      radius: 10,
+                      radius: 8,
                       backgroundColor: position == 0
-                          ? AppColors.primaryColor
-                          : AppColors.secondaryColor,
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor,
                     ),
                   ),
                   Positioned(
                     right: 0,
-                    bottom: -8,
+                    bottom: -6,
                     child: CircleAvatar(
-                      radius: 10,
-                      backgroundColor: value == 1
-                          ? AppColors.secondaryColor
+                      radius: 8,
+                      backgroundColor: isComplete
+                          ? AppColors.primaryColor
                           : AppColors.grey400,
                     ),
                   ),
                 ],
               ),
               Positioned(
-                bottom: -18,
-                left: position - 30,
+                bottom: !isComplete ? -16 : -14,
+                left: position - 24,
                 child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: AppColors.secondaryColor,
-                    child: Icon(
-                      value != 1 ? Icons.fire_truck : Icons.check,
+                    radius: !isComplete ? 18 : 16,
+                    backgroundColor: AppColors.primaryColor,
+                    child: AppIcons(
+                      icon: !isComplete ? AppIconData.bus : AppIconData.check,
                       color: Colors.white,
+                      size: !isComplete ? 18 : 28,
                     )),
               ),
             ],

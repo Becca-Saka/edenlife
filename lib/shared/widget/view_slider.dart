@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class ViewSlidingWidget extends StatefulWidget {
   final Widget child;
-  const ViewSlidingWidget({super.key, required this.child});
+  final int wait;
+  const ViewSlidingWidget({super.key, required this.child, required this.wait});
 
   @override
   State<StatefulWidget> createState() => ViewSlidingWidgetState();
@@ -11,23 +12,26 @@ class ViewSlidingWidget extends StatefulWidget {
 class ViewSlidingWidgetState extends State<ViewSlidingWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
-  late Animation<Offset> offset;
+  late Animation<double> _fadeInFadeOut;
 
   @override
   void initState() {
     super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _fadeInFadeOut = Tween<double>(begin: 0.0, end: 1).animate(controller);
 
-    controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
-
-    offset = Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, 1.0))
-        .animate(controller);
+    Future.delayed(Duration(milliseconds: widget.wait * 100), () {
+      controller.forward();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: offset,
+    return FadeTransition(
+      opacity: _fadeInFadeOut,
       child: widget.child,
     );
   }

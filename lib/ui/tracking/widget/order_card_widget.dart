@@ -1,10 +1,7 @@
 import 'package:eden/model/order_details.dart';
-import 'package:eden/shared/app_colors.dart';
-import 'package:eden/shared/app_spacing.dart';
-import 'package:eden/shared/app_text_style.dart';
-import 'package:eden/shared/extension/string.dart';
-import 'package:eden/shared/widget/animated_progress_bar.dart';
+import 'package:eden/shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class OrderCard extends StatelessWidget {
   final OrderDetails orderDetails;
@@ -17,10 +14,20 @@ class OrderCard extends StatelessWidget {
     this.onTap,
   });
   double get _getProgress {
-    final statusIndex = statuses.indexOf(orderDetails.currentStatus.status) + 1;
-    double progress = statusIndex / statuses.length;
+    double progress = 0;
+
+    if (statuses.isNotEmpty) {
+      final statusIndex =
+          statuses.indexOf(orderDetails.currentStatus.status) + 1;
+      if (statusIndex != -1) {
+        progress = statusIndex / statuses.length;
+      }
+    }
     if (progress > 1) {
       progress = 1;
+    }
+    if (progress < 0) {
+      progress = 0;
     }
     return progress;
   }
@@ -31,6 +38,14 @@ class OrderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.06),
+            spreadRadius: 1.4,
+            blurRadius: 1,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -58,15 +73,12 @@ class OrderCard extends StatelessWidget {
                           child: const Icon(Icons.keyboard_arrow_down_rounded))
                   ],
                 ),
-                const AppSpacing(v: 4),
+                const AppSpacing(v: 12),
                 Text(
                   orderDetails.itemName,
-                  style: AppTextStyle.bold18.copyWith(
-                    color: AppColors.secondaryColor,
-                    fontWeight: AppFontWeight.black,
-                  ),
+                  style: AppTextStyle.bold18,
                 ),
-                const AppSpacing(v: 1),
+                const AppSpacing(v: 4),
                 Text(
                   '${orderDetails.itemQuantity} x NGN ${orderDetails.itemPrice}',
                   style: AppTextStyle.regular14.copyWith(
@@ -74,22 +86,24 @@ class OrderCard extends StatelessWidget {
                   ),
                 ),
                 AppSpacing.v24(),
-                AnimatedProgressBar(
-                  progress: _getProgress,
+                Skeleton.ignore(
+                  child: AnimatedProgressBar(
+                    progress: _getProgress,
+                  ),
                 ),
                 AppSpacing.v24(),
                 RichText(
                   text: TextSpan(children: [
                     TextSpan(
                       text: 'Status: ',
-                      style: AppTextStyle.bold14.copyWith(
+                      style: AppTextStyle.semibold14.copyWith(
                         color: AppColors.grey400,
                       ),
                     ),
                     TextSpan(
                       text: orderDetails.currentStatus.status.toTitleCase(),
-                      style: AppTextStyle.bold14.copyWith(
-                        color: AppColors.secondaryColor,
+                      style: AppTextStyle.semibold14.copyWith(
+                        color: AppColors.grey400,
                       ),
                     ),
                   ]),
@@ -118,7 +132,7 @@ class OrderCard extends StatelessWidget {
                     Text(
                       'Track Order',
                       style: AppTextStyle.bold16.copyWith(
-                        color: AppColors.grey500,
+                        color: AppColors.primaryColor,
                       ),
                     ),
                     AppSpacing.h8(),
@@ -127,6 +141,7 @@ class OrderCard extends StatelessWidget {
                       child: const Icon(
                         Icons.arrow_forward_ios,
                         size: 12,
+                        color: AppColors.primaryColor,
                       ),
                     )
                   ],

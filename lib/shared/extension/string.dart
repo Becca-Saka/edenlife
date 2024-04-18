@@ -5,4 +5,6 @@ extension StringExtension on String {
       .split(' ')
       .map((str) => str.toCapitalized())
       .join(' ');
+
+  String get firstName => split(' ').first;
 }
