@@ -13,12 +13,13 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> checkAuthStatus() async {
-    final response = _authService.currentUser;
-    if (response != null) {
-      AppRouter.router.push(AppRoutes.dashboard);
-    } else {
-      AppRouter.router.push(AppRoutes.signIn);
-    }
+    AppRouter.router.push(AppRoutes.dashboard);
+    // final response = _authService.currentUser;
+    // if (response != null) {
+    //   AppRouter.router.push(AppRoutes.dashboard);
+    // } else {
+    //   AppRouter.router.push(AppRoutes.signIn);
+    // }
   }
 
   Future<void> signInWithGoogle() async {

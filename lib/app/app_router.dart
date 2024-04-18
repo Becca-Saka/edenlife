@@ -1,7 +1,7 @@
-import 'package:eden/ui/dashboard_view.dart';
-import 'package:eden/ui/github_auth_screen.dart';
-import 'package:eden/ui/sign_in_view.dart';
-import 'package:eden/ui/start_up_view.dart';
+import 'package:eden/ui/auth/github_auth_screen.dart';
+import 'package:eden/ui/auth/sign_in_view.dart';
+import 'package:eden/ui/auth/start_up_view.dart';
+import 'package:eden/ui/tracking/order_dashboard_view.dart';
 import 'package:github_signin_aksoyhlc/github_signin_aksoyhlc.dart';
 import 'package:go_router/go_router.dart';
 

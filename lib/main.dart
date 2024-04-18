@@ -4,6 +4,7 @@ import 'package:eden/data/providers/order_provider.dart';
 import 'package:eden/data/services/ably_service.dart';
 import 'package:eden/data/services/auth_services.dart';
 import 'package:eden/firebase_options.dart';
+import 'package:eden/shared/app_text_style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         routerConfig: AppRouter.router,
+        theme: ThemeData(fontFamily: AppTextStyle.fontFamily),
       ),
     );
   }

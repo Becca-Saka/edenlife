@@ -4,9 +4,8 @@ import 'package:flutter/foundation.dart';
 class AblyService {
   Realtime? realtimeInstance;
   void init() {
-    realtimeInstance = Realtime(
-      key: const String.fromEnvironment('ABLY_API_KEY'),
-    );
+    realtimeInstance =
+        Realtime(key: const String.fromEnvironment('ABLY_API_KEY'));
   }
 
   void listenToChanges({
@@ -42,15 +41,24 @@ class AblyService {
     });
   }
 
-  RealtimeChannel listenToChannel(String channelName) {
+  RealtimeChannel listenToChannel({
+    required String channelName,
+    required void Function(Message) onMessage,
+  }) {
     if (realtimeInstance == null) {
       init();
     }
-    final channel = realtimeInstance!.channels.get('order-detail');
-    channel.subscribe().listen(
-          (message) => debugPrint('Message received: ${message.data}'),
-        );
+    final channel = realtimeInstance!.channels.get(channelName);
+    channel.subscribe().listen(onMessage);
     return channel;
+  }
+
+  void publishMessage(String channelName, String message) {
+    if (realtimeInstance == null) {
+      init();
+    }
+    final channel = realtimeInstance!.channels.get(channelName);
+    channel.publish(message: Message(data: message));
   }
 
   void close() {
