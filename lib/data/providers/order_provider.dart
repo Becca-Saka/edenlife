@@ -14,7 +14,7 @@ class OrderProvider extends ChangeNotifier {
   List<OrderDetails> orderDetails = [];
   List<String> statusList = [];
   int? selectedOrderIndex;
-  bool loading = false;
+  bool isLoading = false;
   StatusDetails get status => StatusDetails(
         status: 'ORDER PLACED',
         date: DateTime.now(),
@@ -40,12 +40,12 @@ class OrderProvider extends ChangeNotifier {
         ),
       ];
   void setLoading(bool value) {
-    loading = value;
+    isLoading = value;
     notifyListeners();
   }
 
   void initialize() {
-    loading = true;
+    isLoading = true;
     _ablyService.listenToChanges(
       onInitailized: (state) => debugPrint('Connection initialized'),
       onConnecting: (state) => debugPrint('Connection connecting'),

@@ -1,4 +1,5 @@
 import 'package:eden/app/app_router.dart';
+import 'package:eden/app/locator.dart';
 import 'package:eden/data/providers/auth_provider.dart';
 import 'package:eden/data/providers/order_provider.dart';
 import 'package:eden/data/services/ably_service.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  setupLocator();
   runApp(const MainApp());
 }
 
@@ -27,7 +29,8 @@ class MainApp extends StatelessWidget {
           create: (context) => AuthProvider(authService: AuthService()),
         ),
         ChangeNotifierProvider(
-          create: (context) => OrderProvider(ablyService: AblyService()),
+          create: (context) =>
+              OrderProvider(ablyService: locator<AblyService>()),
         ),
       ],
       child: MaterialApp.router(

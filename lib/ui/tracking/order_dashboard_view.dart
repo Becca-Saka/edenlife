@@ -58,9 +58,9 @@ class _DashboardViewState extends State<DashboardView> {
                           ),
                         ),
                         AppSpacing.v8(),
-                        if (provider.loading)
+                        if (provider.isLoading)
                           Skeletonizer(
-                            enabled: provider.loading,
+                            enabled: provider.isLoading,
                             child: OrderCard(
                               orderDetails: provider.initialData.first,
                               statuses: provider.statusList,

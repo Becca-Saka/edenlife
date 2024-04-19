@@ -2,11 +2,8 @@ import 'package:ably_flutter/ably_flutter.dart';
 import 'package:flutter/foundation.dart';
 
 class AblyService {
-  Realtime? realtimeInstance;
-  void init() {
-    realtimeInstance =
-        Realtime(key: const String.fromEnvironment('ABLY_API_KEY'));
-  }
+  final Realtime realtimeInstance;
+  AblyService(this.realtimeInstance);
 
   void listenToChanges({
     void Function(ConnectionStateChange)? onInitailized,
@@ -18,9 +15,9 @@ class AblyService {
     void Function(ConnectionStateChange)? onClosed,
     void Function(ConnectionStateChange)? onFailed,
   }) async {
-    if (realtimeInstance == null) {
-      init();
-    }
+    // if (realtimeInstance == null) {
+    //   init();
+    // }
     _listenToState(ConnectionEvent.initialized, onInitailized);
     _listenToState(ConnectionEvent.connecting, onConnecting);
     _listenToState(ConnectionEvent.connected, onConnected);
@@ -33,7 +30,7 @@ class AblyService {
 
   void _listenToState(ConnectionEvent event,
       void Function(ConnectionStateChange)? onStateChange) {
-    realtimeInstance!.connection
+    realtimeInstance.connection
         .on(event)
         .listen((ConnectionStateChange stateChange) async {
       debugPrint('New state is: ${stateChange.current}');
@@ -45,23 +42,23 @@ class AblyService {
     required String channelName,
     required void Function(Message) onMessage,
   }) {
-    if (realtimeInstance == null) {
-      init();
-    }
-    final channel = realtimeInstance!.channels.get(channelName);
+    // if (realtimeInstance == null) {
+    //   init();
+    // }
+    final channel = realtimeInstance.channels.get(channelName);
     channel.subscribe().listen(onMessage);
     return channel;
   }
 
   void publishMessage(String channelName, String message) {
-    if (realtimeInstance == null) {
-      init();
-    }
-    final channel = realtimeInstance!.channels.get(channelName);
+    // if (realtimeInstance == null) {
+    //   init();
+    // }
+    final channel = realtimeInstance.channels.get(channelName);
     channel.publish(message: Message(data: message));
   }
 
   void close() {
-    realtimeInstance!.connection.close();
+    realtimeInstance.connection.close();
   }
 }
