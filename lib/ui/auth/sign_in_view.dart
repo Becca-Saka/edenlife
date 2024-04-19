@@ -49,12 +49,14 @@ class SigninView extends StatelessWidget {
                   ),
                   const Spacer(flex: 2),
                   AppButton(
+                    isLoading: provider.isGoogleLoading,
                     onPressed: provider.signInWithGoogle,
                     icon: AppIconData.google,
                     text: 'Sign In With Google',
                   ),
                   AppSpacing.v24(),
                   AppButton(
+                    isLoading: provider.isGithubLoading,
                     onPressed: provider.signInWithGithub,
                     icon: AppIconData.github,
                     text: 'Sign In With Github',

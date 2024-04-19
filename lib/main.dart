@@ -6,6 +6,7 @@ import 'package:eden/data/services/ably_service.dart';
 import 'package:eden/data/services/auth_services.dart';
 import 'package:eden/firebase_options.dart';
 import 'package:eden/shared/app_colors.dart';
+import 'package:eden/shared/app_snackbar.dart';
 import 'package:eden/shared/app_text_style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         routerConfig: AppRouter.router,
+        scaffoldMessengerKey: scaffoldKey,
         theme: ThemeData(
           fontFamily: AppTextStyle.fontFamily,
           primaryColor: AppColors.primaryColor,

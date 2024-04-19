@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:eden/shared/app_colors.dart';
 import 'package:eden/shared/app_spacing.dart';
 import 'package:eden/shared/app_text_style.dart';
 import 'package:eden/shared/widget/app_icons.dart';
@@ -8,9 +9,11 @@ class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
   final String icon;
+  final bool isLoading;
   const AppButton({
     super.key,
     this.onPressed,
+    this.isLoading = false,
     required this.text,
     required this.icon,
   });
@@ -25,19 +28,21 @@ class AppButton extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         onPressed: onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppIcons(
-              icon: icon,
-            ),
-            AppSpacing.h8(),
-            Text(
-              text,
-              style: AppTextStyle.regular16,
-            ),
-          ],
-        ),
+        child: isLoading
+            ? const CircularProgressIndicator(color: AppColors.primaryColor)
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppIcons(
+                    icon: icon,
+                  ),
+                  AppSpacing.h8(),
+                  Text(
+                    text,
+                    style: AppTextStyle.regular16,
+                  ),
+                ],
+              ),
       ),
     );
   }

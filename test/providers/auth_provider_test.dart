@@ -15,7 +15,8 @@ void main() {
   });
 
   test('initial values are correct', () {
-    expect(sut.isLoading, false);
+    expect(sut.isGoogleLoading, false);
+    expect(sut.isGoogleLoading, false);
   });
 
   group('on signInWithGoogle - ', () {

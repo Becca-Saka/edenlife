@@ -21,11 +21,14 @@ class GreetingsWidget extends StatelessWidget {
                 fontWeight: AppFontWeight.black,
               ),
             ),
-            AppImages(
-              path: provider.currentUser?.photoURL ?? AppIconData.user,
-              radius: 24,
-              height: 32,
-              width: 32,
+            InkWell(
+              onTap: provider.signOut,
+              child: AppImages(
+                path: provider.currentUser?.photoURL ?? AppIconData.user,
+                radius: 24,
+                height: 32,
+                width: 32,
+              ),
             ),
           ],
         );
