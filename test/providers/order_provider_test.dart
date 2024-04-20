@@ -17,15 +17,13 @@ void main() {
 
   late OrderProvider sut;
   late MockAblyService mockAblyService;
-  late MockRealtime relatime;
+  late MockRealtime realtime;
 
   late MockMethodCallManager manager;
 
   setUp(() {
     manager = MockMethodCallManager();
-  });
-  setUp(() {
-    relatime = MockRealtime();
+    realtime = MockRealtime();
     mockAblyService = MockAblyService();
 
     sut = OrderProvider(ablyService: mockAblyService);
@@ -41,7 +39,7 @@ void main() {
   });
   group('initialize - ', () {
     test('update loading state after 5 seconds', () async {
-      when(mockAblyService.realtimeInstance).thenAnswer((_) => relatime);
+      when(mockAblyService.realtimeInstance).thenAnswer((_) => realtime);
 
       sut.initialize();
       expect(sut.isLoading, true);
