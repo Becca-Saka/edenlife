@@ -10,6 +10,8 @@ Eden Tracker is a demo tracking app built with [Ably Realtime](https://ably.com/
 - Real-time tracking functionality powered by Ably.
 
 ### Videos:
+Full list of videos can be found here: [https://drive.google.com/drive/folders/1U5Xn-GXfleAcQW1cbCAxJ9pNSmwHqiz9?usp=sharing](https://drive.google.com/drive/folders/1U5Xn-GXfleAcQW1cbCAxJ9pNSmwHqiz9?usp=sharing)
+
 | Sign In with Google |Sign In with GitHub |
 | - | - |
 | [![Google](https://github.com/Becca-Saka/edenlife/blob/master/screenrecord/google.gif?raw=true)](https://github.dev/Becca-Saka/edenlife)|[![GitHub](https://github.com/Becca-Saka/edenlife/blob/master/screenrecord/github.gif?raw=true)](https://github.dev/Becca-Saka/edenlife) |
