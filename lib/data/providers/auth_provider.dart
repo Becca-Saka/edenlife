@@ -24,7 +24,6 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> checkAuthStatus() async {
-    // AppRouter.router.push(AppRoutes.dashboard);
     if (currentUser != null) {
       AppRouter.router.push(AppRoutes.dashboard);
     } else {

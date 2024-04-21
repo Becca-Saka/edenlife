@@ -15,9 +15,6 @@ class AblyService {
     void Function(ConnectionStateChange)? onClosed,
     void Function(ConnectionStateChange)? onFailed,
   }) async {
-    // if (realtimeInstance == null) {
-    //   init();
-    // }
     _listenToState(ConnectionEvent.initialized, onInitailized);
     _listenToState(ConnectionEvent.connecting, onConnecting);
     _listenToState(ConnectionEvent.connected, onConnected);
@@ -42,18 +39,12 @@ class AblyService {
     required String channelName,
     required void Function(Message) onMessage,
   }) {
-    // if (realtimeInstance == null) {
-    //   init();
-    // }
     final channel = realtimeInstance.channels.get(channelName);
     channel.subscribe().listen(onMessage);
     return channel;
   }
 
   void publishMessage(String channelName, String message) {
-    // if (realtimeInstance == null) {
-    //   init();
-    // }
     final channel = realtimeInstance.channels.get(channelName);
     channel.publish(message: Message(data: message));
   }

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:eden/data/providers/auth_provider.dart';
 import 'package:eden/shared/app_colors.dart';
 import 'package:eden/shared/app_spacing.dart';
@@ -24,7 +23,6 @@ class SigninView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-                // mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
